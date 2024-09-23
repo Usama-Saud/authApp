@@ -6,7 +6,6 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {resource} from '@env';
 
 const Splash = ({navigation}) => {
   const [error, setError] = useState(null);
@@ -67,11 +66,6 @@ const Splash = ({navigation}) => {
 
   return (
     <View style={styles.mainContainer}>
-      {/* <Image
-        source={require('../../assets/maison.png')}
-        style={styles.splashImage}
-      /> */}
-
       <View style={styles.logoCon}>
         <Image
           style={styles.splashImage}
@@ -81,9 +75,7 @@ const Splash = ({navigation}) => {
           <Text style={styles.smartAppText}>Auth App</Text>
         </View>
 
-        <Text style={styles.bottomText}>
-          Powered by: Usama
-        </Text>
+        <Text style={styles.bottomText}>Powered by: Usama</Text>
       </View>
     </View>
   );
