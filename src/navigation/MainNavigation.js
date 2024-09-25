@@ -50,7 +50,7 @@ const MainNavigation = () => {
             },
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Register"
           component={Register}
           options={{
@@ -63,7 +63,7 @@ const MainNavigation = () => {
               fontSize: 18,
             },
           }}
-        />
+        /> */}
         <Stack.Screen
           name="Dashboard"
           component={Dashboard}
@@ -80,7 +80,7 @@ const MainNavigation = () => {
             },
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="AllCustomers"
           component={AllCustomers}
           options={{
@@ -181,7 +181,7 @@ const MainNavigation = () => {
               fontSize: 18,
             },
           }}
-        />
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
