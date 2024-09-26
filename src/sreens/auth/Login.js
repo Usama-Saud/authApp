@@ -13,11 +13,17 @@ import {authorize} from 'react-native-app-auth'; // OAuth 2.0 library
 import {useNavigation} from '@react-navigation/native';
 import {Snackbar} from 'react-native-paper';
 
+// Use the client_id from your downloaded JSON file
 const config = {
   issuer: 'https://accounts.google.com',
-  clientId: 'YOUR_GOOGLE_CLIENT_ID',
-  redirectUrl: 'YOUR_APP:/oauth2redirect/google',
-  scopes: ['openid', 'profile', 'email'],
+  clientId:
+    '7725917582924-d0fbco108hn9gtand6b1c3lrb23k1sg9.apps.googleusercontent.com', // Client ID from the JSON
+  redirectUrl: 'com.usamaaauthproject:/oauth2redirect/google', // Replace with your app's redirect URI (use your Android package name here)
+  scopes: ['openid', 'profile', 'email'], // Scopes for accessing user profile and email
+  serviceConfiguration: {
+    authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth', // From your JSON
+    tokenEndpoint: 'https://oauth2.googleapis.com/token', // From your JSON
+  },
 };
 
 const Login = () => {
@@ -57,7 +63,7 @@ const Login = () => {
           <ActivityIndicator size="large" color="#fca311" />
         ) : (
           <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-            <Ionicons name="logo-google" size={20} color="#fff" />
+            {/* <Ionicons name="logo-google" size={20} color="#fff" /> */}
             <Text style={styles.loginButtonText}>Login with Google</Text>
           </TouchableOpacity>
         )}
@@ -84,7 +90,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
   },
-  loginButtonText: {color: '#fff', marginLeft: 10, fontSize: 18},
+  loginButtonText: {
+    color: '#000',
+    marginLeft: 10,
+    fontWeight: '700',
+    fontSize: 18,
+  },
 });
 
 export default Login;

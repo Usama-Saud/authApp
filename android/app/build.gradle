@@ -77,14 +77,14 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.mynewproject"
+    namespace "com.usamaaauthproject"
     defaultConfig {
-        applicationId "com.mynewproject"
+        applicationId "com.usamaaauthproject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        manifestPlaceholders = [appAuthRedirectScheme: 'com.mynewproject']
+        manifestPlaceholders = [appAuthRedirectScheme: 'com.usamaaauthproject']
     }
     signingConfigs {
         debug {

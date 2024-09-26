@@ -1,19 +1,11 @@
 import 'react-native-gesture-handler';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {hp, wp} from '../constants/Size';
 import Splash from '../sreens/splash/Splash';
 import Login from '../sreens/auth/Login';
-import Register from '../sreens/auth/Register';
 import Dashboard from '../sreens/dashboard/Dashboard';
-import AllCustomers from '../sreens/allCustomers/AllCustomers';
-import AllItems from '../sreens/allItems/AllItems';
-import SettingsScreen from '../sreens/settings/Settings';
-import ScanQR from '../sreens/scanQR/ScanQR';
-import CollectEmpty from '../sreens/collectEmpty/CollectEmpty';
-import Signature from '../sreens/signature/Signature';
+
 
 
 
@@ -189,4 +181,4 @@ const MainNavigation = () => {
 
 export default MainNavigation;
 
-const styles = StyleSheet.create({});
+// const styles = StyleSheet.create({});/
