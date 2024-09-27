@@ -17,7 +17,7 @@ import {Snackbar} from 'react-native-paper';
 const config = {
   issuer: 'https://accounts.google.com',
   clientId:
-    '7725917582924-d0fbco108hn9gtand6b1c3lrb23k1sg9.apps.googleusercontent.com', // Client ID from the JSON
+    '725917582924-d0fbco108hn9gtand6b1c3lrb23k1sg9.apps.googleusercontent.com', // Client ID from the JSON
   redirectUrl: 'com.usamaaauthproject:/oauth2redirect/google', // Replace with your app's redirect URI (use your Android package name here)
   scopes: ['openid', 'profile', 'email'], // Scopes for accessing user profile and email
   serviceConfiguration: {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   container: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   logoImage: {width: 100, height: 100, alignSelf: 'center'},
   formContainer: {marginTop: 20},
-  loginText: {fontSize: 18, marginBottom: 10, textAlign: 'center'},
+  loginText: {fontSize: 18, color:'#000', marginBottom: 10, textAlign: 'center'},
   loginButton: {
     flexDirection: 'row',
     alignItems: 'center',
