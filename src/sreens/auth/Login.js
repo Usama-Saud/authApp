@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {authorize} from 'react-native-app-auth'; // OAuth 2.0 library
@@ -16,13 +17,18 @@ import {Snackbar} from 'react-native-paper';
 // Use the client_id from your downloaded JSON file
 const config = {
   issuer: 'https://accounts.google.com',
-  clientId:
-    '725917582924-d0fbco108hn9gtand6b1c3lrb23k1sg9.apps.googleusercontent.com', // Client ID from the JSON
-  redirectUrl: 'com.usamaaauthproject:/oauth2redirect/google', // Replace with your app's redirect URI (use your Android package name here)
+  clientId: Platform.select({
+    ios: '725917582924-tlohagtq31v5kq9gk3bgiaop8ppjl53b.apps.googleusercontent.com', // Replace with your iOS Client ID
+    android: '725917582924-d0fbco108hn9gtand6b1c3lrb23k1sg9.apps.googleusercontent.com', // Replace with your Android Client ID
+  }),
+  redirectUrl: Platform.select({
+    ios: 'org.authTest-01.MyNewProject:/oauth2redirect/google', // iOS redirect URI (replace with your iOS bundle ID)
+    android: 'com.usamaaauthproject:/oauth2redirect/google', // Android redirect URI (your Android package name)
+  }),
   scopes: ['openid', 'profile', 'email'], // Scopes for accessing user profile and email
   serviceConfiguration: {
-    authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth', // From your JSON
-    tokenEndpoint: 'https://oauth2.googleapis.com/token', // From your JSON
+    authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
+    tokenEndpoint: 'https://oauth2.googleapis.com/token',
   },
 };
 

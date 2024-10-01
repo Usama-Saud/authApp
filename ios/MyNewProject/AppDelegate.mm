@@ -2,6 +2,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <RNGestureHandler.h>  // Import the RNGestureHandler header
+#import "RNAppAuthAuthorizationFlowManager.h" // Import AppAuth
 
 @implementation AppDelegate
 
@@ -13,9 +14,19 @@
   self.initialProps = @{};
 
   // Ensure the gesture handler is properly set up
-  [RNGestureHandlerRootView class]; // Register RNGestureHandlerRootView
+  [RNGestureHandler class]; // Register RNGestureHandlerRootView
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
+}
+
+// Add this method to handle OAuth redirection
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options
+{
+  if ([self.authorizationFlowManagerDelegate resumeExternalUserAgentFlowWithURL:url]) {
+    return YES;
+  }
+
+  return [super application:app openURL:url options:options];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
