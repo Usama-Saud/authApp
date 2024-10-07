@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "bundle:ios": "npx react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
+    "generate-staging-ipa": "yarn bundle:ios && cd ios && sh build.sh uat && cd .."
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.0.0",
@@ -27,7 +29,8 @@
     "react-native-safe-area-context": "^4.11.0",
     "react-native-screens": "^3.34.0",
     "react-native-vector-icons": "^10.2.0",
-    "react-redux": "^9.1.2"
+    "react-redux": "^9.1.2",
+    "whatwg-url": "^14.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -7,26 +7,27 @@ import {
   Image,
   ActivityIndicator,
   Platform,
+  Linking,
 } from 'react-native';
 import {authorize} from 'react-native-app-auth'; // OAuth 2.0 library for Google
 import {useNavigation} from '@react-navigation/native';
 import {Snackbar} from 'react-native-paper';
 import OAuth from 'oauth-1.0a';
-import CryptoJS from 'crypto-js'; // Required for generating the request token for Twitter
+import CryptoJS from 'crypto-js'; 
 
 // Google OAuth Config
 const googleConfig = {
   issuer: 'https://accounts.google.com',
   clientId: Platform.select({
-    ios: '725917582924-tlohagtq31v5kq9gk3bgiaop8ppjl53b.apps.googleusercontent.com', // Replace with your iOS Client ID
+    ios: '725917582924-tlohagtq31v5kq9gk3bgiaop8ppjl53b.apps.googleusercontent.com', 
     android:
-      '725917582924-d0fbco108hn9gtand6b1c3lrb23k1sg9.apps.googleusercontent.com', // Replace with your Android Client ID
+      '725917582924-d0fbco108hn9gtand6b1c3lrb23k1sg9.apps.googleusercontent.com', 
   }),
   redirectUrl: Platform.select({
-    ios: 'org.authTest-01.MyNewProject:/oauth2redirect/google', // iOS redirect URI (replace with your iOS bundle ID)
-    android: 'com.usamaaauthproject:/oauth2redirect/google', // Android redirect URI (your Android package name)
+    ios: 'org.authTest-01.MyNewProject:/oauth2redirect/google', 
+    android: 'com.usamaaauthproject:/oauth2redirect/google', 
   }),
-  scopes: ['openid', 'profile', 'email'], // Scopes for accessing user profile and email
+  scopes: ['openid', 'profile', 'email'], 
   serviceConfiguration: {
     authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
     tokenEndpoint: 'https://oauth2.googleapis.com/token',
@@ -57,29 +58,38 @@ const Login = () => {
 
   // Function for Google Login
   const handleGoogleLogin = async () => {
-    if (!loadingTwitter) { // Ensure no other loader is active
-      setLoadingGoogle(true);
-      try {
-        const authState = await authorize(googleConfig); // OAuth 2.0 login for Google
-        console.log('Logged in successfully with Google!', authState);
+    setLoadingGoogle(true);
+    try {
+      const authState = await authorize(googleConfig); // OAuth 2.0 login for Google
+      console.log('Logged in successfully with Google!', authState);
 
-        // After login, navigate to Dashboard
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'Dashboard'}],
-        });
-      } catch (e) {
-        setError('Google Login failed. Please try again.');
-        setSnackbarVisible(true);
-      } finally {
-        setLoadingGoogle(false);
-      }
+      // After login, navigate to Dashboard
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Dashboard'}],
+      });
+    } catch (e) {
+      setError('Google Login failed. Please try again.');
+      setSnackbarVisible(true);
+    } finally {
+      setLoadingGoogle(false);
     }
+  };
+
+  // Helper function to parse query string
+  const parseQueryString = queryString => {
+    const params = {};
+    const queries = queryString.split('&');
+    queries.forEach(query => {
+      const [key, value] = query.split('=');
+      params[key] = decodeURIComponent(value);
+    });
+    return params;
   };
 
   // Function for Twitter Login using OAuth 1.0a
   const handleTwitterLogin = async () => {
-    setLoadingTwitter(true); // Start loader for Twitter
+    setLoadingTwitter(true);
     try {
       const oauth = OAuth({
         consumer: {
@@ -88,47 +98,98 @@ const Login = () => {
         },
         signature_method: 'HMAC-SHA1',
         hash_function(base_string, key) {
-          return CryptoJS.HmacSHA1(base_string, key).toString(CryptoJS.enc.Base64);
+          return CryptoJS.HmacSHA1(base_string, key).toString(
+            CryptoJS.enc.Base64,
+          );
         },
       });
-  
+
       // Request Token
       console.log('Requesting Twitter OAuth request token...');
       const requestTokenResponse = await fetch(twitterRequestTokenURL, {
         method: 'POST',
         headers: oauth.toHeader(
-          oauth.authorize({ url: twitterRequestTokenURL, method: 'POST' })
+          oauth.authorize({url: twitterRequestTokenURL, method: 'POST'}),
         ),
       });
-  
-      if (!requestTokenResponse.ok) {
-        throw new Error(`Failed to get request token: ${requestTokenResponse.statusText}`);
-      }
-  
+
       const requestTokenData = await requestTokenResponse.text();
       console.log('Request token response:', requestTokenData);
-  
-      // Extract oauth_token from response
-      const oauthToken = new URLSearchParams(requestTokenData).get('oauth_token');
+
+      // Manually parse the query string
+      const requestTokenParams = parseQueryString(requestTokenData);
+      const oauthToken = requestTokenParams['oauth_token'];
+
       if (!oauthToken) {
-        throw new Error('OAuth token not found in response.');
+        throw new Error('Failed to retrieve OAuth token');
       }
-  
-      // Redirect to Twitter authorization page
+
+      // Redirect to Twitter authorization page in the browser
       const twitterAuthURL = `${twitterAuthorizeURL}?oauth_token=${oauthToken}`;
       console.log('Redirecting to Twitter for authentication:', twitterAuthURL);
-  
-      // Navigate to WebView for Twitter authentication
-      navigation.navigate('WebViewScreen', { url: twitterAuthURL });
+
+      // Open Twitter's authorization page in the browser
+      await Linking.openURL(twitterAuthURL); // This will open the URL in the default browser or Twitter app
     } catch (e) {
       console.error('Error in Twitter OAuth flow:', e.message);
       setError('Twitter Login failed. Please try again.');
       setSnackbarVisible(true);
     } finally {
-      setLoadingTwitter(false); // Stop loader
+      setLoadingTwitter(false);
     }
   };
-  
+
+  // Function for Twitter Login using OAuth 1.0a
+  // const handleTwitterLogin = async () => {
+  //   setLoadingTwitter(true);
+  //   try {
+  //     const oauth = OAuth({
+  //       consumer: {
+  //         key: twitterConfig.apiKey,
+  //         secret: twitterConfig.apiSecretKey,
+  //       },
+  //       signature_method: 'HMAC-SHA1',
+  //       hash_function(base_string, key) {
+  //         return CryptoJS.HmacSHA1(base_string, key).toString(
+  //           CryptoJS.enc.Base64,
+  //         );
+  //       },
+  //     });
+
+  //     // Request Token
+  //     console.log('Requesting Twitter OAuth request token...');
+  //     const requestTokenResponse = await fetch(twitterRequestTokenURL, {
+  //       method: 'POST',
+  //       headers: oauth.toHeader(
+  //         oauth.authorize({ url: twitterRequestTokenURL, method: 'POST' }),
+  //       ),
+  //     });
+
+  //     const requestTokenData = await requestTokenResponse.text();
+  //     console.log('Request token response:', requestTokenData);
+
+  //     // Manually parse the query string (instead of using URLSearchParams)
+  //     const requestTokenParams = parseQueryString(requestTokenData);
+  //     const oauthToken = requestTokenParams['oauth_token'];
+
+  //     if (!oauthToken) {
+  //       throw new Error('Failed to retrieve OAuth token');
+  //     }
+
+  //     // Redirect to Twitter authorization page
+  //     const twitterAuthURL = `${twitterAuthorizeURL}?oauth_token=${oauthToken}`;
+  //     console.log('Redirecting to Twitter for authentication:', twitterAuthURL);
+
+  //     // Navigate to WebView for authentication
+  //     navigation.navigate('Dashboard', { url: twitterAuthURL });
+  //   } catch (e) {
+  //     console.error('Error in Twitter OAuth flow:', e.message);
+  //     setError('Twitter Login failed. Please try again.');
+  //     setSnackbarVisible(true);
+  //   } finally {
+  //     setLoadingTwitter(false);
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
@@ -142,7 +203,7 @@ const Login = () => {
           <ActivityIndicator size="large" color="#fca311" />
         ) : (
           <TouchableOpacity
-            style={[styles.loginButton, {backgroundColor: '#4285F4'}]}
+            style={[styles.loginButton, {backgroundColor: '#fccf79'}]}
             onPress={handleGoogleLogin}>
             <Text style={styles.loginButtonText}>Login with Google</Text>
           </TouchableOpacity>
@@ -186,7 +247,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   loginButtonText: {
-    color: '#fff',
+    color: '#000',
     fontWeight: '700',
     fontSize: 18,
   },
