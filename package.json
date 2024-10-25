@@ -18,6 +18,7 @@
     "@react-navigation/native-stack": "^6.11.0",
     "@react-navigation/stack": "^6.4.1",
     "crypto-js": "^4.2.0",
+    "expo-linking": "^6.3.1",
     "oauth-1.0a": "^2.2.6",
     "react": "18.3.1",
     "react-native": "0.75.3",
@@ -28,6 +29,7 @@
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^4.11.0",
     "react-native-screens": "^3.34.0",
+    "react-native-url-polyfill": "^2.0.0",
     "react-native-vector-icons": "^10.2.0",
     "react-redux": "^9.1.2",
     "whatwg-url": "^14.0.0"

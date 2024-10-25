@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>method</key>
+  <string>ad-hoc</string> <!-- or 'app-store', 'development', 'enterprise' based on your distribution method -->
+  <key>provisioningProfiles</key>
+  <dict>
+    <key>org.authTest-01.MyNewProject</key> <!-- Your bundle identifier -->
+    <string>iPhone Distribution: Your Name (Team ID)</string> <!-- Your certificate/provisioning profile name -->
+    <key>com.yourcompany.appname.staging</key> <!-- Staging profile if you're using one -->
+    <string>iPhone Distribution: Your Name (Team ID)</string>
+  </dict>
+</dict>
+</plist>
